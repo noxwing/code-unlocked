@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Unlocked: Your AI Guide to Modern Web Development</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <style>
+        .grid-bg {
+            position: relative;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-attachment: fixed;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .book-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .icon-hover {
+            transition: transform 0.3s ease;
+        }
+
+        .icon-hover:hover {
+            transform: scale(1.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ai-icon {
+            transition: all 0.3s ease;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .ai-icon:hover {
+            transform: scale(1.2);
+            opacity: 1 !important;
+            filter: none !important;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        .motion-blur {
+            filter: blur(2px);
+        }
+
+        .icon-container {
+            perspective: 1000px;
+        }
+
+        /* Custom Alert Styles */
+        .custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            max-width: 90%;
+            width: 400px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .custom-alert-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 1rem;
+        }
+
+        .custom-alert-message {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+        }
+
+        .custom-alert-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .custom-alert-button:hover {
+            transform: scale(1.05);
+        }
+
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+
+            .text-xl {
+                font-size: 1.125rem;
+            }
+
+            .text-4xl {
+                font-size: 2rem;
+            }
+
+            .text-5xl {
+                font-size: 2.5rem;
+            }
+
+            .text-6xl {
+                font-size: 3rem;
+            }
+
+            .grid-cols-5 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .grid-cols-3 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+
+            .max-w-sm {
+                max-width: 100%;
+            }
+
+            .w-32 {
+                width: 6rem;
+                height: 6rem;
+            }
+
+            .text-2xl {
+                font-size: 1.5rem;
+            }
+
+            .max-w-4xl {
+                max-width: 100%;
+            }
+
+            .max-w-md {
+                max-width: 90%;
+            }
+
+            .px-8 {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .py-4 {
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+
+            .space-y-4> :not([hidden])~ :not([hidden]) {
+                margin-top: 1rem;
+            }
+
+            .custom-alert {
+                width: 90%;
+                padding: 1rem;
+            }
+
+            .custom-alert-header {
+                font-size: 1.125rem;
+            }
+
+            .custom-alert-message {
+                font-size: 0.875rem;
+            }
+
+            .custom-alert-button {
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="grid-bg bg-gray-50 text-gray-900">
+    <!-- Header -->
+    <header class="relative z-10 py-6 px-4">
+        <nav class="container mx-auto flex flex-col sm:flex-row justify-between items-start">
+            <!-- Logo + Title -->
+            <div class="flex items-center space-x-3 mb-4 sm:mb-0">
+                <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg"></div>
+                <span class="text-xl font-bold gradient-text">Code Unlocked</span>
+            </div>
+
+            <!-- Button (hidden on small screens) -->
+            <a href="#contact"
+                class="hidden sm:inline-block bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-300">
+                Pre-Order Now
+            </a>
+        </nav>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="relative py-20 px-4">
+        <div class="container mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="space-y-8 fade-in">
+                    <h1 class="text-5xl lg:text-6xl font-bold leading-tight">
+                        <span class="gradient-text">Code Unlocked:</span>
+                        <br>Your AI Guide to Modern Web Development
+                    </h1>
+                    <p class="text-xl text-gray-600 leading-relaxed">
+                        Master modern web development with AI-powered tools and techniques. From HTML & CSS to advanced
+                        deployment strategies, unlock your potential with over 1,000 AI prompts.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="scrollToContact()"
+                            class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                            Pre-Order Book
+                        </button>
+                        <button onclick="scrollToFeatures()"
+                            class="border border-gray-300 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Content - Book Cover -->
+                <div class="flex justify-center slide-in-right">
+                    <div class="book-float">
+                        <img src="book-cover-img.png" alt="Code Unlocked Book Cover"
+                            class="max-w-sm w-full h-auto shadow-2xl rounded-lg"
+                            onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzY2N2VlYTtzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNzY0YmEyO3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNvZGU8L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSI1NSUiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+VW5sb2NrZWQ8L3RleHQ+Cjwvc3ZnPg=='">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI-Powered Development -->
+    <section class="py-20 px-4" id="features">
+        <div class="container mx-auto">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl font-bold mb-4">AI-Powered Development</h2>
+                <p class="text-xl text-gray-600">Harness the power of cutting-edge AI tools to elevate your web
+                    development workflow</p>
+            </div>
+
+            <div class="icon-container grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-center">
+                <div class="flex flex-col items-center space-y-3 ai-icon"
+                    style="transform: rotate(-5deg); opacity: 0.7; animation-delay: 0s;">
+                    <img src="chatgpt-icon.png" alt="ChatGPT" class="w-16 h-16"
+                        onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzc0YWE5YyIvPgo8dGV4dCB4PSIxMiIgeT0iMTMiIGZvbnQtc2l6ZT0iNiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdQVDwvdGV4dD4KPHRleHQgeD0iMTIiIHk9IjE5IiBmb250LXNpemU9IjYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj40LjA8L3RleHQ+Cjwvc3ZnPg=='">
+                    <span class="text-sm font-medium text-gray-700">ChatGPT</span>
+                </div>
+
+                <div class="flex flex-col items-center space-y-3 ai-icon"
+                    style="transform: rotate(8deg); opacity: 0.9; animation-delay: 0.5s;">
+                    <img src="claude-icon.png" alt="Claude AI" class="w-16 h-16"
+                        onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iI0QyNzMxRCIvPgo8dGV4dCB4PSIxMiIgeT0iMTUiIGZvbnQtc2l6ZT0iOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkM8L3RleHQ+Cjwvc3ZnPg=='">
+                    <span class="text-sm font-medium text-gray-700">Claude AI</span>
+                </div>
+
+                <div class="flex flex-col items-center space-y-3 ai-icon"
+                    style="transform: rotate(6deg); opacity: 0.8; animation-delay: 1.5s;">
+                    <img src="readdy-icon.avif" alt="Readdy AI" class="w-16 h-16"
+                        onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzVhNWI3ZiIvPgo8dGV4dCB4PSIxMiIgeT0iMTUiIGZvbnQtc2l6ZT0iOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkQ8L3RleHQ+Cjwvc3ZnPg=='">
+                    <span class="text-sm font-medium text-gray-700">Readdy AI</span>
+                </div>
+
+                <div class="flex flex-col items-center space-y-3 ai-icon"
+                    style="transform: rotate(6deg); opacity: 0.8; animation-delay: 1.5s;">
+                    <img src="bolt-icon.png" alt="Bolt-AI" class="w-16 h-16"
+                        onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzVhNWI3ZiIvPgo8dGV4dCB4PSIxMiIgeT0iMTUiIGZvbnQtc2l6ZT0iOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkQ8L3RleHQ+Cjwvc3ZnPg=='">
+                    <span class="text-sm font-medium text-gray-700">Bolt AI</span>
+                </div>
+
+                <div class="flex flex-col items-center space-y-3 ai-icon"
+                    style="transform: rotate(-7deg); opacity: 0.7; animation-delay: 2s;">
+                    <img src="grok-icon.png" alt="Grok" class="w-16 h-16"
+                        onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwNjZhYyIvPgo8dGV4dCB4PSIxMiIgeT0iMTUiIGZvbnQtc2l6ZT0iOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdSPC90ZXh0Pjwvc3ZnPg=='">
+                    <span class="text-sm font-medium text-gray-700">Grok</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What You'll Learn -->
+    <section class="py-20 px-4 bg-white bg-opacity-80">
+        <div class="container mx-auto">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl font-bold mb-4">What You'll Learn</h2>
+                <p class="text-xl text-gray-600">From beginner to advanced web development concepts</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg slide-in-left">
+                    <div class="w-12 h-12 bg-black rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-white font-bold">1</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Foundation & Setup</h3>
+                    <p class="text-gray-600">Master HTML, CSS, and modern development environment setup with VS Code and
+                        essential extensions.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg fade-in">
+                    <div class="w-12 h-12 bg-black rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-white font-bold">2</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">AI-Powered Design</h3>
+                    <p class="text-gray-600">Learn Figma, UI/UX principles, and leverage AI tools for design workflows
+                        and prototyping.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg slide-in-right">
+                    <div class="w-12 h-12 bg-black rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-white font-bold">3</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Modern Development</h3>
+                    <p class="text-gray-600">Version control with Git, responsive design, accessibility, and deployment
+                        strategies.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg slide-in-left">
+                    <div class="w-12 h-12 bg-black rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-white font-bold">4</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Real Projects</h3>
+                    <p class="text-gray-600">Build portfolio websites, landing pages, and blogs while learning best
+                        practices.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg fade-in">
+                    <div class="w-12 h-12 bg-black rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-white font-bold">5</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Advanced Concepts</h3>
+                    <p class="text-gray-600">Progressive Web Apps, APIs, JAMstack, and integrating AI services into your
+                        projects.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg slide-in-right">
+                    <div class="w-12 h-12 bg-black rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-white font-bold">+</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">1,000+ AI Prompts</h3>
+                    <p class="text-gray-600">Curated AI prompts for design, coding, SEO, debugging, and creative
+                        problem-solving.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Authors -->
+    <section class="py-20 px-4">
+        <div class="container mx-auto">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl font-bold mb-4">Meet the Authors</h2>
+                <p class="text-xl text-gray-600">Expert guidance from industry professionals</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+                <!-- Author 1 -->
+                <div class="text-center slide-in-left">
+                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden">
+                        <img src="author-1.jpg" alt="Adnan Hisham" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Adnan Hisham</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Web Development Expert with years of experience in modern frontend technologies and AI-powered
+                        development workflows.
+                    </p>
+                </div>
+
+                <!-- Author 2 -->
+                <div class="text-center slide-in-right">
+                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden">
+                        <img src="author-2.jpg" alt="Abdullah Althaf" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Abdullah Althaf</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        AI & Development Specialist focused on integrating artificial intelligence tools into modern web
+                        development practices.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact/Pre-Order -->
+    <section class="py-20 px-4 bg-gradient-to-r from-blue-500 to-purple-600" id="contact">
+        <div class="container mx-auto text-center">
+            <div class="fade-in">
+                <h2 class="text-4xl font-bold text-white mb-6">Ready to Unlock Your Potential?</h2>
+                <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                    Join thousands of developers who are already transforming their careers with AI-powered web
+                    development.
+                </p>
+
+                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 max-w-md mx-auto">
+                    <h3 class="text-2xl font-semibold text-white mb-6">Contact for Pre-Order</h3>
+                    <form action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+                        <!-- Web3Forms Access Key -->
+                        <input type="hidden" name="access_key" value="92c72f07-e768-422b-957a-6757981b3edf">
+
+                        <!-- Form Fields -->
+                        <input type="text" name="name" placeholder="Your Name" required
+                            class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-blue-200 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white">
+
+                        <input type="email" name="email" placeholder="Your Email" required
+                            class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-blue-200 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white">
+
+                        <textarea name="message" placeholder="Message (Optional)" rows="3"
+                            class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-blue-200 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white resize-none"></textarea>
+
+                        <!-- Submit Button -->
+                        <button type="submit"
+                            class="w-full bg-white text-blue-600 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300 transform hover:scale-105">
+                            Send Pre-Order Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 bg-gray-900 text-white">
+        <div class="container mx-auto text-center">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg"></div>
+                <span class="text-xl font-bold">Code Unlocked</span>
+            </div>
+            <p class="text-gray-400 mb-4">Your AI Guide to Modern Web Development</p>
+            <p class="text-sm text-gray-500">© 2025 Adnan Hisham & Abdullah Althaf. Self-Published Edition.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        function scrollToContact() {
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToFeatures() {
+            document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with animation classes
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
+            animatedElements.forEach(el => observer.observe(el));
+        });
+
+        // Custom alert function
+        function showCustomAlert(message) {
+            const overlay = document.createElement('div');
+            overlay.className = 'custom-alert-overlay';
+
+            const alertBox = document.createElement('div');
+            alertBox.className = 'custom-alert';
+            alertBox.innerHTML = `
+                <div class="custom-alert-header">Thank You!</div>
+                <div class="custom-alert-message">${message}</div>
+                <button class="custom-alert-button">OK</button>
+            `;
+
+            document.body.appendChild(overlay);
+            document.body.appendChild(alertBox);
+
+            const closeButton = alertBox.querySelector('.custom-alert-button');
+            closeButton.addEventListener('click', () => {
+                alertBox.remove();
+                overlay.remove();
+            });
+        }
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showCustomAlert('Thank you for your interest! We will contact you soon regarding the pre-order.');
+        });
+    </script>
+</body>
+
+</html>
